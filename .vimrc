@@ -184,3 +184,10 @@ map <silent> <Leader>y :TagbarToggle<CR>
 
 "--- wrapping
 set nowrap
+
+"--- genuis stuff ---"
+" ,D - open _absolute_ directory in Vimux
+map <silent> <Leader>D :call VimuxRunCommand('cd $(dirname ' . @% . ')')<CR>
+" ,d - open _relative_ directory in Vimux
+map <silent> <Leader>d :call VimuxRunCommand('cd ' . getcwd() . '/$(dirname ' . @% . ')')<CR>
+
