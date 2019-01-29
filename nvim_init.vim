@@ -28,10 +28,12 @@ Plugin 'majutsushi/tagbar'
 " snippets
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
-Plugin 'garbas/vim-snipmate'
 
 " html5 syntax
 Bundle 'othree/html5.vim'
+
+" expand html (css like syntax)
+Plugin 'mattn/emmet-vim'
 
 " javascript syntax
 Bundle 'pangloss/vim-javascript'
@@ -40,9 +42,6 @@ Bundle 'elixir-editors/vim-elixir'
 
 Bundle 'benmills/vimux'
 Bundle 'chaoren/vim-wordmotion'
-
-Bundle 'itchyny/lightline.vim'
-Bundle 'edkolev/tmuxline.vim'
 
 Bundle 'scrooloose/nerdtree'
 Bundle 'EvanDotPro/nerdtree-symlink'
@@ -61,10 +60,23 @@ Bundle 'tpope/vim-git'
 
 Bundle 'airblade/vim-gitgutter'
 
+Bundle 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
+"--- TS
+" Completion
+Plugin 'HerringtonDarkholme/yats.vim'
+Plugin 'mhartington/nvim-typescript', {'do': './install.sh'}
+" For async completion
+Plugin 'Shougo/deoplete.nvim'
+" For Denite features
+Plugin 'Shougo/denite.nvim'
+
+"--- PHP
+Plugin 'vim-vdebug/vdebug'
+
 call vundle#end()
 filetype plugin indent on
-
-execute pathogen#infect()
 
 "---
 
@@ -109,7 +121,7 @@ let php_htmlInStrings=1
 if has("wildmenu")
     set wildignore+=*~,*.swp,*.swo
     set wildmenu
-    set wildmode=longest,list
+    set wildmode=longest:full
 endif
 
 "---
@@ -132,8 +144,6 @@ let g:lightline = {
             \   'subseparator': {'left': '\ue0b1', 'right': '\ue0b3'}
             \ }
             \ }
-
-set statusline+=%{gutentags#statusline()}
 
 set noshowmode
 
@@ -158,8 +168,16 @@ let mapleader=","
 
 map <Leader>t :call VimuxRunCommand("clear; composer test")<CR>
 map <Leader>t :call VimuxRunCommand("clear; mix test")<CR>
+map <Leader>t :call VimuxRunCommand("clear; yarn test")<CR>
+" map <Leader>T :call VimuxRunCommand("clear; NODE_OPTIONS=\"--trace-warnings\" yarn run jest " . @% . " --collectCoverageFrom=" . "$(dirname " . @% . ")/* --coverage")<CR>
+map <Leader>T :call VimuxRunCommand("clear; NODE_OPTIONS=\"--trace-warnings\" yarn run jest " . @%)<CR>
+
+"---
+
+set nohlsearch
 
 "--- PHP 4 chars indent
+set shiftwidth=2 tabstop=2
 autocmd FileType php setlocal shiftwidth=4 tabstop=4
 
 "--- ctrl+p
@@ -173,12 +191,6 @@ let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|dist'
 
 "--- html5 highlight
 syn keyword htmlTagName contained transition component
-
-"--- snippets
-imap <C-J> <Plug>snipMateNextOrTrigger
-imap <C-K> <Plug>snipMateBack
-
-"let g:snipMate.scope_aliases['vue'] = 'javascript,html,css,scss,sass'
 
 "--- nerdtree
 map <silent> <Leader>n :NERDTreeFind<CR>:NERDTreeFocus<CR>
@@ -207,3 +219,34 @@ map <Leader>g :call VimuxRunCommand('grep ')<left><left>
 let g:ctrlp_cmd = 'CtrlPMRU'
 
 let g:NERDTreeWinSize=45
+
+"--- linters
+let g:ale_linters = {'javascript': ['eslint']}
+let g:ale_fixers = {'javascript': ['eslint']}
+let g:ale_linters_explicit = 1
+let g:ale_sign_column_always = 1
+let g:airline#extensions#ale#enabled = 1
+
+"--- airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline_theme = "base16"
+
+"--- completion
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#auto_complete_start_length = 1
+let deoplete#tag#cache_limit_size = 20000000 " 20MB
+
+call deoplete#custom#option({
+      \ 'auto_complete_delay': 10,
+      \ 'async_timeout': 150,
+      \ 'camel_case': v:true,
+      \ 'smart_case': v:true,
+      \ 'num_processes': 8,
+      \ })
+
+call deoplete#custom#option('tags', 'rank', 99)
+set complete-=i
+
+"--- typescript completion
+"let g:nvim_typescript#server_options = ['--resolveJsonModule']
