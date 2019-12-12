@@ -1,11 +1,16 @@
+set hidden
+
+if &compatible
+  set nocompatible
+endif
+
+filetype plugin indent on
+syntax enable
+
 "Vundle
 
-set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
-
+call plug#begin()
 "PLUGINS HERE
 "Bundle 'vim-ruby/vim-ruby'
 "Bundle 'thoughtbot/vim-rspec'
@@ -15,67 +20,79 @@ Plugin 'gmarik/Vundle.vim'
 "Bundle 'groenewege/vim-less'
 "Bundle 'kchmck/vim-coffee-script'
 "Bundle 'severin-lemaignan/vim-minimap'
-Bundle 'captbaritone/better-indent-support-for-php-with-html'
+Plug 'captbaritone/better-indent-support-for-php-with-html'
 "Bundle 'vim-syntastic/syntastic'
 "Bundle 'artur-shaik/vim-javacomplete2'
 
 " colorschemes! :)
-Plugin 'flazz/vim-colorschemes'
+Plug 'flazz/vim-colorschemes'
 
 " tags
-Plugin 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 
 " snippets
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
 
 " html5 syntax
-Bundle 'othree/html5.vim'
-
-" expand html (css like syntax)
-Plugin 'mattn/emmet-vim'
+Plug 'othree/html5.vim'
 
 " javascript syntax
-Bundle 'pangloss/vim-javascript'
+Plug 'pangloss/vim-javascript'
 
-Bundle 'elixir-editors/vim-elixir'
+Plug 'elixir-editors/vim-elixir'
 
-Bundle 'benmills/vimux'
-Bundle 'chaoren/vim-wordmotion'
+Plug 'benmills/vimux'
+Plug 'chaoren/vim-wordmotion'
 
-Bundle 'scrooloose/nerdtree'
-Bundle 'EvanDotPro/nerdtree-symlink'
-Bundle 'Xuyuanp/nerdtree-git-plugin'
+Plug 'itchyny/lightline.vim'
+Plug 'edkolev/tmuxline.vim'
 
-Bundle 'posva/vim-vue'
-Bundle 'mbbill/undotree'
+Plug 'scrooloose/nerdtree'
+Plug 'EvanDotPro/nerdtree-symlink'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
-Bundle 'kien/ctrlp.vim'
+Plug 'posva/vim-vue'
+Plug 'mbbill/undotree'
 
-Bundle 'easymotion/vim-easymotion'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'yggdroot/leaderf'
 
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-git'
+Plug 'easymotion/vim-easymotion'
 
-Bundle 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-git'
 
-Bundle 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'airblade/vim-gitgutter'
 
-"--- TS
+" Lint
+Plug 'w0rp/ale'
+
+" Syntax
+Plug 'HerringtonDarkholme/yats.vim'
+
+" Typescript
+Plug 'mhartington/nvim-typescript', { 'do': './install.sh' }
+
 " Completion
-Plugin 'HerringtonDarkholme/yats.vim'
-Plugin 'mhartington/nvim-typescript', {'do': './install.sh'}
-" For async completion
-Plugin 'Shougo/deoplete.nvim'
-" For Denite features
-Plugin 'Shougo/denite.nvim'
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugs' }
+" Plug 'Shougo/denite.nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-"--- PHP
-Plugin 'vim-vdebug/vdebug'
+" Icons!!!
+Plug 'ryanoasis/vim-devicons'
 
-call vundle#end()
+" Markdown preview
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+
+" GraphQL
+Plug 'jparise/vim-graphql'
+
+" let g:deoplete#enable_at_startup = 1
+
+call plug#end()
 filetype plugin indent on
 
 "---
@@ -102,8 +119,8 @@ map <Leader>p :set ft=php <CR>
 
 "---
 
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 set expandtab
 set wildmenu
 
@@ -121,7 +138,7 @@ let php_htmlInStrings=1
 if has("wildmenu")
     set wildignore+=*~,*.swp,*.swo
     set wildmenu
-    set wildmode=longest:full
+    set wildmode=longest,list
 endif
 
 "---
@@ -144,6 +161,8 @@ let g:lightline = {
             \   'subseparator': {'left': '\ue0b1', 'right': '\ue0b3'}
             \ }
             \ }
+
+set statusline+=%{gutentags#statusline()}
 
 set noshowmode
 
@@ -168,29 +187,31 @@ let mapleader=","
 
 map <Leader>t :call VimuxRunCommand("clear; composer test")<CR>
 map <Leader>t :call VimuxRunCommand("clear; mix test")<CR>
-map <Leader>t :call VimuxRunCommand("clear; yarn test")<CR>
-" map <Leader>T :call VimuxRunCommand("clear; NODE_OPTIONS=\"--trace-warnings\" yarn run jest " . @% . " --collectCoverageFrom=" . "$(dirname " . @% . ")/* --coverage")<CR>
-map <Leader>T :call VimuxRunCommand("clear; NODE_OPTIONS=\"--trace-warnings\" yarn run jest " . @%)<CR>
-
-"---
-
-set nohlsearch
 
 "--- PHP 4 chars indent
-set shiftwidth=2 tabstop=2
 autocmd FileType php setlocal shiftwidth=4 tabstop=4
 
 "--- ctrl+p
 let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlPTag'
+" let g:ctrlp_cmd = 'CtrlPTag'
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_max_files=0
 let g:ctrlp_max_depth=10
 
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|dist'
+if executable('ag')
+  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+else
+  let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|DS_Store|_build|deps)|(\.(swp|ico|git|svn))$'
+endif
 
 "--- html5 highlight
 syn keyword htmlTagName contained transition component
+
+"--- snippets
+imap <C-J> <Plug>snipMateNextOrTrigger
+imap <C-K> <Plug>snipMateBack
+
+"let g:snipMate.scope_aliases['vue'] = 'javascript,html,css,scss,sass'
 
 "--- nerdtree
 map <silent> <Leader>n :NERDTreeFind<CR>:NERDTreeFocus<CR>
@@ -215,38 +236,69 @@ map <silent> <Leader>d :call VimuxRunCommand('cd ' . getcwd() . '/$(dirname ' . 
 " ,g - start grepping in Vimux
 map <Leader>g :call VimuxRunCommand('grep ')<left><left>
 
-" CTRL+P default to Most Recently Used
-let g:ctrlp_cmd = 'CtrlPMRU'
-
 let g:NERDTreeWinSize=45
 
-"--- linters
-let g:ale_linters = {'javascript': ['eslint']}
-let g:ale_fixers = {'javascript': ['eslint']}
-let g:ale_linters_explicit = 1
-let g:ale_sign_column_always = 1
-let g:airline#extensions#ale#enabled = 1
+set nohlsearch
+set encoding=UTF-8
 
-"--- airline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:airline_theme = "base16"
+" Mouse for everything (y)
+set mouse=a
 
-"--- completion
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#auto_complete_start_length = 1
-let deoplete#tag#cache_limit_size = 20000000 " 20MB
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
 
-call deoplete#custom#option({
-      \ 'auto_complete_delay': 10,
-      \ 'async_timeout': 150,
-      \ 'camel_case': v:true,
-      \ 'smart_case': v:true,
-      \ 'num_processes': 8,
-      \ })
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
 
-call deoplete#custom#option('tags', 'rank', 99)
-set complete-=i
+" always show sign column
+set signcolumn=yes
 
-"--- typescript completion
-"let g:nvim_typescript#server_options = ['--resolveJsonModule']
+" COC
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Create mappings for function text object, requires document symbols feature of languageserver.
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
+
+" Use <C-d> for select selections ranges, needs server support, like: coc-tsserver, coc-python
+nmap <silent> <C-d> <Plug>(coc-range-select)
+xmap <silent> <C-d> <Plug>(coc-range-select)
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Using CocList
+" Show diagnostics info
+nnoremap <silent> <space>d  <Plug>(coc-refactor)
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+" Better display for messages
+set cmdheight=2
