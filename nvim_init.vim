@@ -22,6 +22,8 @@ call plug#begin()
 Plug 'captbaritone/better-indent-support-for-php-with-html'
 "Bundle 'vim-syntastic/syntastic' Bundle 'artur-shaik/vim-javacomplete2'
 
+Plug 'dyng/ctrlsf.vim'
+
 Plug 'tpope/vim-projectionist'
 Plug 'cakebaker/scss-syntax.vim'
 
@@ -69,13 +71,13 @@ Plug 'tpope/vim-git'
 Plug 'airblade/vim-gitgutter'
 
 " Lint
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 
 " Syntax
 Plug 'HerringtonDarkholme/yats.vim'
 
 " Typescript
-Plug 'mhartington/nvim-typescript', { 'do': './install.sh' }
+" Plug 'mhartington/nvim-typescript', { 'do': './install.sh' }
 
 " Completion Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugs' } Plug
 " 'Shougo/denite.nvim'
@@ -182,6 +184,7 @@ let mapleader=","
 
 map <Leader>t :call VimuxRunCommand("clear; py.test")<CR>
 map <Leader>t :call VimuxRunCommand("clear; mix test")<CR>
+map <Leader>t :call VimuxRunCommand("clear; npm test")<CR>
 
 map <Leader>T :call VimuxRunCommand("clear; mix test " . @%)<CR>
 
@@ -248,6 +251,9 @@ set shortmess+=c
 " always show sign column
 set signcolumn=yes
 
+" COC completion ctrl + space
+inoremap <silent><expr> <c-space> coc#refresh()
+
 " COC Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
@@ -299,12 +305,18 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 set cmdheight=2
 
 " Open this config
-nmap <space>1 :tabe /Users/oskar1233/.config/nvim/init.vim<CR>
+nmap <space>1 :tabe ~/.config/nvim/init.vim<CR>
 
 " Source this config
-nmap <space>2 :so /Users/oskar1233/.config/nvim/init.vim<CR>
+nmap <space>2 :so ~/.config/nvim/init.vim<CR>
 
 " SPELL CHECK <3
 set spell spelllang=en_gb
 hi clear SpellBad
 hi SpellBad cterm=underline
+hi CocErrorFloat guifg=#00ff00
+
+" search in files
+nmap <C-F>f <Plug>CtrlSFPrompt
+nmap <C-F>n <Plug>CtrlSFCwordPath
+nmap <C-F>p <Plug>CtrlSFPwordPath
