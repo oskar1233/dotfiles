@@ -136,7 +136,7 @@ au FileType php set omnifunc=phpcomplete#CompletePHP
 "---
 
 if has("wildmenu")
-  set wildignore+=*~,*.swp,*.swo
+  set wildignore+=*~,*.swp,*.swo,*/node_modules/*,*/.nuxt/*,*/_build/*,*/deps/*,*/.elixir_ls/*,.elixir_ls/*,.nuxt/*
   set wildmenu
   set wildmode=longest,list
 endif
@@ -183,8 +183,8 @@ colorscheme darkZ
 let mapleader=","
 
 map <Leader>t :call VimuxRunCommand("clear; py.test")<CR>
-map <Leader>t :call VimuxRunCommand("clear; mix test")<CR>
 map <Leader>t :call VimuxRunCommand("clear; npm test")<CR>
+map <Leader>t :call VimuxRunCommand("clear; mix test")<CR>
 
 map <Leader>T :call VimuxRunCommand("clear; mix test " . @%)<CR>
 
@@ -201,7 +201,7 @@ let g:ctrlp_max_depth=10
 if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 else
-  let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|DS_Store|_build|deps|vendor|coverage)|(\.(swp|ico|git|svn))$'
+  let g:ctrlp_custom_ignore = '\v[\/](node_modules|.nuxt|target|dist|DS_Store|_build|deps|vendor|coverage)|(\.(swp|ico|git|svn))$'
 endif
 
 "--- html5 highlight
@@ -231,6 +231,8 @@ set scrolloff=18
 map <silent> <Leader>D :call VimuxRunCommand('cd $(dirname ' . @% . ')')<CR>
 " ,d - open _relative_ directory in Vimux
 map <silent> <Leader>d :call VimuxRunCommand('cd ' . getcwd() . '/$(dirname '. @% . ')')<CR>
+" ,f - open working directory directory in Vimux
+map <silent> <Leader>f :call VimuxRunCommand('cd ' . getcwd())<CR>
 " ,g - start grepping in Vimux
 map <Leader>g :call VimuxRunCommand('grep ')<left><left>
 
@@ -320,3 +322,6 @@ hi CocErrorFloat guifg=#00ff00
 nmap <C-F>f <Plug>CtrlSFPrompt
 nmap <C-F>n <Plug>CtrlSFCwordPath
 nmap <C-F>p <Plug>CtrlSFPwordPath
+
+" make ctrlp use vim working dir
+let g:ctrlp_working_path_mode = 0
