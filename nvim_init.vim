@@ -36,7 +36,6 @@ Plug 'majutsushi/tagbar'
 " snippets
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
-Plug 'garbas/vim-snipmate'
 
 " html5 syntax
 Plug 'othree/html5.vim'
@@ -136,7 +135,7 @@ au FileType php set omnifunc=phpcomplete#CompletePHP
 "---
 
 if has("wildmenu")
-  set wildignore+=*~,*.swp,*.swo,*/node_modules/*,*/.nuxt/*,*/_build/*,*/deps/*,*/.elixir_ls/*,.elixir_ls/*,.nuxt/*
+  set wildignore+=*~,*.swp,*.swo,*/node_modules/*,*/.nuxt/*,*/_build/*,*/deps/*,*/.elixir_ls/*,.elixir_ls/*,.nuxt/*,
   set wildmenu
   set wildmode=longest,list
 endif
@@ -183,10 +182,11 @@ colorscheme darkZ
 let mapleader=","
 
 map <Leader>t :call VimuxRunCommand("clear; py.test")<CR>
-map <Leader>t :call VimuxRunCommand("clear; npm test")<CR>
+map <Leader>q :call VimuxRunCommand("clear; npm test")<CR>
 map <Leader>t :call VimuxRunCommand("clear; mix test")<CR>
 
 map <Leader>T :call VimuxRunCommand("clear; mix test " . @%)<CR>
+map <Leader>c :call VimuxRunCommand("clear; mix test --only current")<CR>
 
 "--- PHP 4 chars indent
 autocmd FileType php setlocal shiftwidth=4 tabstop=4
@@ -201,16 +201,11 @@ let g:ctrlp_max_depth=10
 if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 else
-  let g:ctrlp_custom_ignore = '\v[\/](node_modules|.nuxt|target|dist|DS_Store|_build|deps|vendor|coverage)|(\.(swp|ico|git|svn))$'
+  let g:ctrlp_custom_ignore = '\v[\/](node_modules|.nuxt|target|dist|DS_Store|_build|deps|vendor|coverage|.elixir_ls)|(\.(swp|ico|git|svn))$'
 endif
 
 "--- html5 highlight
 syn keyword htmlTagName contained transition component
-
-"--- snippets
-imap <C-J> <Plug>snipMateNextOrTrigger imap <C-K> <Plug>snipMateBack
-
-"let g:snipMate.scope_aliases['vue'] = 'javascript,html,css,scss,sass'
 
 "--- nerdtree
 map <silent> <Leader>n :NERDTreeFind<CR>:NERDTreeFocus<CR>
@@ -285,7 +280,7 @@ nnoremap <silent> <space>f :Format<cr>
 
 " Using CocList
 " Show diagnostics info
-nnoremap <silent> <space>d  <Plug>(coc-refactor)
+" nnoremap <silent> <space>d  <Plug>(coc-refactor)
 " Show all diagnostics
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions
@@ -302,6 +297,12 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+" Show definition
+nmap <silent> <space>d :<C-U>call CocActionAsync('jumpDefinition')<CR>
+
+" Show references
+nmap <silent> <space>r :<C-U>call CocActionAsync('jumpReferences')<CR>
 
 " Better display for messages
 set cmdheight=2
@@ -325,3 +326,19 @@ nmap <C-F>p <Plug>CtrlSFPwordPath
 
 " make ctrlp use vim working dir
 let g:ctrlp_working_path_mode = 0
+
+" make CtrlSF not auto close
+let g:ctrlsf_auto_close = {
+    \ "normal" : 0,
+    \ "compact": 0
+    \}
+
+let g:ctrlsf_extra_backend_args = {
+      \ 'ack': '--ignore-file=is:erl_crash.dump'
+      \ }
+
+let g:ctrlsf_default_view_mode = 'compact'
+
+let g:ctrlsf_ignore_dir = ['node_modules', '.nuxt', 'target', 'dist', 'DS_Store', '_build', 'deps', 'vendor', 'coverage', '.elixir_ls', 'erl_crash.dump']
+
+imap <silent><expr> <CR> coc#float#has_float() ? coc#_select_confirm() : '<CR>'
