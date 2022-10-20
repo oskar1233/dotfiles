@@ -19,6 +19,8 @@ call plug#begin()
 "'tpope/vim-rails' Bundle 'tpope/vim-haml' Bundle 'violetyk/cake.vim' Bundle
 "'groenewege/vim-less' Bundle 'kchmck/vim-coffee-script' Bundle
 "'severin-lemaignan/vim-minimap'
+Plug 'tikhomirov/vim-glsl'
+
 Plug 'captbaritone/better-indent-support-for-php-with-html'
 "Bundle 'vim-syntastic/syntastic' Bundle 'artur-shaik/vim-javacomplete2'
 
@@ -337,7 +339,7 @@ let g:ctrlsf_extra_backend_args = {
       \ 'ack': '--ignore-file=is:erl_crash.dump'
       \ }
 
-let g:ctrlsf_default_view_mode = 'compact'
+" let g:ctrlsf_default_view_mode = 'compact'
 
 let g:ctrlsf_ignore_dir = ['node_modules', '.nuxt', 'target', 'dist', 'DS_Store', '_build', 'deps', 'vendor', 'coverage', '.elixir_ls', 'erl_crash.dump']
 
