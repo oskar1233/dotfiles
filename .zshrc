@@ -3,7 +3,7 @@
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/oskar1233/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Path to Java
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.2.jdk/Contents/Home"
@@ -117,16 +117,24 @@ export CATALINA_HOME=/usr/share/tomcat7
 alias vim='nvim'
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/oskar1233/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/oskar1233/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '$HOME/google-cloud-sdk/path.zsh.inc' ]; then . '$HOME/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/oskar1233/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/oskar1233/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f '$HOME/google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/google-cloud-sdk/completion.zsh.inc'; fi
 
 # eval $(docker-machine env)
-eval $(thefuck --alias)
+
+if command -v thefuck &> /dev/null
+then
+	eval $(thefuck --alias)
+fi
 
 # Completion for kubectl
 if [ $commands[kubectl] ]; then source <(kubectl completion zsh); fi
 export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 
-. /usr/local/opt/asdf/asdf.sh
+if [ -f '/usr/local/opt/asdf/asdf.sh' ]; then . /usr/local/opt/asdf/asdf.sh
+fi
+
+if [ -f '$HOME/.asdf/asdf.sh' ]; then . $HOME/.asdf/asdf.sh
+fi
