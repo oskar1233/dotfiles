@@ -1,0 +1,24 @@
+{
+  "sql.database": "postgresql",
+  "codeLens.enable": true,
+  "elixirLS.dialyzerEnabled": true,
+  "elixir.pathToElixirLS": "~/.elixir-ls-otp-24/language_server.sh",
+  "vetur.format.defaultFormatter.js": "prettier-eslint",
+  "yaml.format.enable": true,
+  "languageserver": {
+    "graphql": {
+      "command": "graphql-lsp",
+      "args": [
+        "server",
+        "-m",
+        "stream"
+      ],
+      "filetypes": [
+        "typescript",
+        "typescriptreact",
+        "graphql",
+        "gql"
+      ]
+    }
+  }
+}
