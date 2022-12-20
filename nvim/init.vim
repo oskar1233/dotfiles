@@ -1,3 +1,5 @@
+" NERD FONT to install https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/FantasqueSansMono.zip -- use that in the terminal
+
 set omnifunc=ale#completion#OmniFunc
 let g:ale_completion_enabled = 1
 let g:ale_completion_autoimport = 1
@@ -54,9 +56,14 @@ Plug 'chaoren/vim-wordmotion'
 Plug 'itchyny/lightline.vim'
 Plug 'edkolev/tmuxline.vim'
 
-Plug 'scrooloose/nerdtree'
-Plug 'EvanDotPro/nerdtree-symlink'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+" Replacing that with nvim-tree
+" Plug 'scrooloose/nerdtree'
+" Plug 'nvim-tree/nvim-tree.lua'
+" Plug 'EvanDotPro/nerdtree-symlink'
+" Plug 'Xuyuanp/nerdtree-git-plugin'
+
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-tree/nvim-tree.lua'
 
 Plug 'posva/vim-vue'
 Plug 'mbbill/undotree'
@@ -70,6 +77,8 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-git'
 
 Plug 'airblade/vim-gitgutter'
+
+Plug 'tikhomirov/vim-glsl'
 
 " Lint
 " Plug 'w0rp/ale'
@@ -210,7 +219,11 @@ endif
 syn keyword htmlTagName contained transition component
 
 "--- nerdtree
-map <silent> <Leader>n :NERDTreeFind<CR>:NERDTreeFocus<CR>
+" map <silent> <Leader>n :NERDTreeFind<CR>:NERDTreeFocus<CR>
+
+"--- nvim-tree
+luafile ~/.config/nvim/nvim-tree.lua
+map <silent> <Leader>n :NvimTreeFindFile<CR>:NvimTreeFocus<CR>
 
 "--- tags
 map <silent> <Leader>y :TagbarToggle<CR>
@@ -300,6 +313,10 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
+hi! CocErrorSign guifg=#d1666a
+hi! CocInfoSign guibg=#353b45
+hi! CocWarningSign guifg=#d1cd66
+
 " Show definition
 nmap <silent> <space>d :<C-U>call CocActionAsync('jumpDefinition')<CR>
 
@@ -343,4 +360,10 @@ let g:ctrlsf_extra_backend_args = {
 
 let g:ctrlsf_ignore_dir = ['node_modules', '.nuxt', 'target', 'dist', 'DS_Store', '_build', 'deps', 'vendor', 'coverage', '.elixir_ls', 'erl_crash.dump']
 
-imap <silent><expr> <CR> coc#float#has_float() ? coc#_select_confirm() : '<CR>'
+autocmd! BufNewFile,BufRead *.vs,*.fs set ft=glsl
+
+" confirm completion with enter but maybe better to memorize <Ctrl - y>
+" imap <silent><expr> <CR> coc#float#has_float() ? coc#_select_confirm() : '<CR>'
+
+"
+inoremap <silent><expr> <c-space> coc#refresh()
