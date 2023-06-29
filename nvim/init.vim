@@ -1,6 +1,10 @@
 " NERD FONT to install https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/FantasqueSansMono.zip -- use that in the terminal
 
-set omnifunc=ale#completion#OmniFunc
+nnoremap <SPACE> <Nop>
+" let mapleader="<space>"
+map <Space> <Leader>
+
+set omnifunc=null
 let g:ale_completion_enabled = 1
 let g:ale_completion_autoimport = 1
 
@@ -17,16 +21,25 @@ syntax enable
 
 filetype off
 call plug#begin()
-"PLUGINS HERE Bundle 'vim-ruby/vim-ruby' Bundle 'thoughtbot/vim-rspec' Bundle
-"'tpope/vim-rails' Bundle 'tpope/vim-haml' Bundle 'violetyk/cake.vim' Bundle
-"'groenewege/vim-less' Bundle 'kchmck/vim-coffee-script' Bundle
-"'severin-lemaignan/vim-minimap'
+
+Plug 'peitalin/vim-jsx-typescript'
+
+Plug 'github/copilot.vim'
+imap <silent> <C-\> <Plug>(copilot-suggest)
+imap <silent> <C-j> <Plug>(copilot-next)
+imap <silent> <C-k> <Plug>(copilot-previous)
+
+Plug 'mogelbrod/vim-jsonpath'
+
 Plug 'tikhomirov/vim-glsl'
 
 Plug 'captbaritone/better-indent-support-for-php-with-html'
-"Bundle 'vim-syntastic/syntastic' Bundle 'artur-shaik/vim-javacomplete2'
 
-Plug 'dyng/ctrlsf.vim'
+" Plug 'dyng/ctrlsf.vim'
+
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.1' }
 
 Plug 'tpope/vim-projectionist'
 Plug 'cakebaker/scss-syntax.vim'
@@ -44,8 +57,15 @@ Plug 'tomtom/tlib_vim'
 " html5 syntax
 Plug 'othree/html5.vim'
 
+" .NET
+Plug 'OmniSharp/omnisharp-vim'
+Plug 'nickspoons/vim-sharpenup'
+
 " javascript syntax
 Plug 'pangloss/vim-javascript'
+
+" Svelte
+Plug 'evanleck/vim-svelte', {'branch': 'main'}
 
 Plug 'elixir-editors/vim-elixir'
 Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
@@ -56,21 +76,14 @@ Plug 'chaoren/vim-wordmotion'
 Plug 'itchyny/lightline.vim'
 Plug 'edkolev/tmuxline.vim'
 
-" Replacing that with nvim-tree
-" Plug 'scrooloose/nerdtree'
-" Plug 'nvim-tree/nvim-tree.lua'
-" Plug 'EvanDotPro/nerdtree-symlink'
-" Plug 'Xuyuanp/nerdtree-git-plugin'
-
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'nvim-tree/nvim-tree.lua'
 
 Plug 'posva/vim-vue'
 Plug 'mbbill/undotree'
 
-Plug 'ctrlpvim/ctrlp.vim'
-
 Plug 'easymotion/vim-easymotion'
+map , <Plug>(easymotion-prefix)
 
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
@@ -80,17 +93,10 @@ Plug 'airblade/vim-gitgutter'
 
 Plug 'tikhomirov/vim-glsl'
 
-" Lint
-" Plug 'w0rp/ale'
-
 " Syntax
 Plug 'HerringtonDarkholme/yats.vim'
 
-" Typescript
-" Plug 'mhartington/nvim-typescript', { 'do': './install.sh' }
-
-" Completion Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugs' } Plug
-" 'Shougo/denite.nvim'
+" Coc
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Icons!!!
@@ -105,29 +111,16 @@ Plug 'jparise/vim-graphql'
 " Rust
 Plug 'rust-lang/rust.vim'
 
-" let g:deoplete#enable_at_startup = 1
-
 call plug#end()
 filetype plugin indent on
 
 "---
 
-"if !empty(matchstr($MY_RUBY_HOME, 'jruby')) let g:ruby_path =
-"join(split(glob($MY_RUBY_HOME.'/lib/ruby/*.*')."\n".glob($MY_RUBY_HOME.'/lib/rubysite_ruby/*'),
-""\n"), ',') endif
-"
-"autocmd FileType ruby compiler ruby autocmd FileType eruby compiler eruby
-"autocmd FileType rubyunit compiler rubyunit
-"
-":map <Leader>t :call RunCurrentSpecFile() <CR> :map <Leader>s :call
-"RunNearestSpec() <CR> :map <Leader>l :call RunLastSpec() <CR> :map <Leader>a
-":call RunAllSpecs() <CR>
-
-"---
-
 au BufNewFile,BufRead *.ctp set filetype=html syntax=php
+au BufNewFile,BufRead *.heex set filetype=eelixir syntax=eelixir
+" au BufNewFile,BufRead *.heex set filetype=html syntax=eelixir
 
-map <Leader>h :set ft=html <CR> map <Leader>p :set ft=php <CR>
+" autocmd BufWritePost *.html.heex !mix format <afile>
 
 "---
 
@@ -141,24 +134,8 @@ autocmd Filetype scss setlocal tabstop=2 shiftwidth=2 expandtab
 "---
 
 au FileType php set omnifunc=phpcomplete#CompletePHP
-"au FileType java set omnifunc=javacomplete#Complete let php_sql_query=1 let php_htmlInStrings=1
 
 "---
-
-if has("wildmenu")
-  set wildignore+=*~,*.swp,*.swo,*/node_modules/*,*/.nuxt/*,*/_build/*,*/deps/*,*/.elixir_ls/*,.elixir_ls/*,.nuxt/*,
-  set wildmenu
-  set wildmode=longest,list
-endif
-
-"---
-
-"let g:syntastic_always_populate_loc_list = 1
-""let g:syntastic_auto_loc_list = 1 "auto open list (split)
-"let g:syntastic_check_on_open = 1 let g:syntastic_check_on_wq = 0
-"
-"let g:syntastic_sass_checkers = ["sass"] let g:syntastic_scss_checkers =
-"["sass"]
 
 "---
 
@@ -170,8 +147,6 @@ let g:lightline = {
       \   'subseparator': {'left': '\ue0b1', 'right': '\ue0b3'}
       \   }
       \ }
-
-set statusline+=%{gutentags#statusline()}
 
 set noshowmode
 
@@ -190,43 +165,22 @@ colorscheme darkZ
 
 "---
 
-let mapleader=","
-
 map <Leader>t :call VimuxRunCommand("clear; py.test")<CR>
 map <Leader>q :call VimuxRunCommand("clear; npm test")<CR>
 map <Leader>t :call VimuxRunCommand("clear; mix test")<CR>
 
 map <Leader>T :call VimuxRunCommand("clear; mix test " . @%)<CR>
-map <Leader>c :call VimuxRunCommand("clear; mix test --only current")<CR>
+map <Leader>C :call VimuxRunCommand("clear; mix test --only current")<CR>
+" map <Leader>F :call VimuxRunCommand("clear; mix test --failed")<CR>
 
-"--- PHP 4 chars indent
-autocmd FileType php setlocal shiftwidth=4 tabstop=4
+map <silent> <Leader>F :!mix format %<CR>
 
-"--- ctrl+p
-let g:ctrlp_map = '<c-p>'
-" let g:ctrlp_cmd = 'CtrlPTag'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_max_files=0
-let g:ctrlp_max_depth=10
-
-if executable('ag')
-  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
-else
-  let g:ctrlp_custom_ignore = '\v[\/](node_modules|.nuxt|target|dist|DS_Store|_build|deps|vendor|coverage|.elixir_ls)|(\.(swp|ico|git|svn))$'
-endif
+map <Leader>G :call VimuxRunCommand("go run " . @%)<CR>
+map <Leader>R :call VimuxRunCommand("cargo run")<CR>
+map <Leader>N :call VimuxRunCommand("node .")<CR>
 
 "--- html5 highlight
 syn keyword htmlTagName contained transition component
-
-"--- nerdtree
-" map <silent> <Leader>n :NERDTreeFind<CR>:NERDTreeFocus<CR>
-
-"--- nvim-tree
-luafile ~/.config/nvim/nvim-tree.lua
-map <silent> <Leader>n :NvimTreeFindFile<CR>:NvimTreeFocus<CR>
-
-"--- tags
-map <silent> <Leader>y :TagbarToggle<CR>
 
 "--- wrapping
 set nowrap
@@ -242,11 +196,9 @@ map <silent> <Leader>D :call VimuxRunCommand('cd $(dirname ' . @% . ')')<CR>
 " ,d - open _relative_ directory in Vimux
 map <silent> <Leader>d :call VimuxRunCommand('cd ' . getcwd() . '/$(dirname '. @% . ')')<CR>
 " ,f - open working directory directory in Vimux
-map <silent> <Leader>f :call VimuxRunCommand('cd ' . getcwd())<CR>
+" map <silent> <Leader>f :call VimuxRunCommand('cd ' . getcwd())<CR>
 " ,g - start grepping in Vimux
-map <Leader>g :call VimuxRunCommand('grep ')<left><left>
-
-let g:NERDTreeWinSize=45
+" map <Leader>g :call VimuxRunCommand('grep ')<left><left>
 
 set nohlsearch
 set encoding=UTF-8
@@ -255,7 +207,7 @@ set encoding=UTF-8
 set mouse=a
 
 " You will have bad experience for diagnostic messages when it's default 4000.
-set updatetime=300
+set updatetime=50
 
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
@@ -291,37 +243,31 @@ xmap <silent> <C-d> <Plug>(coc-range-select)
 
 " Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
-nnoremap <silent> <space>f :Format<cr>
+nnoremap <silent> <Leader>f :Format<cr>
 
 " Using CocList
 " Show diagnostics info
-" nnoremap <silent> <space>d  <Plug>(coc-refactor)
+nnoremap <silent> <space>d  <Plug>(coc-refactor)
 " Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <Leader>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+nnoremap <silent> <Leader>e  :<C-u>CocList extensions<cr>
 " Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+nnoremap <silent> <Leader>c  :<C-u>CocList commands<cr>
 " Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+nnoremap <silent> <Leader>o  :<C-u>CocList outline<cr>
 " Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+nnoremap <silent> <Leader>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+nnoremap <silent> <Leader>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+nnoremap <silent> <Leader>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+nnoremap <silent> <Leader>p  :<C-u>CocListResume<CR>
 
 hi! CocErrorSign guifg=#d1666a
 hi! CocInfoSign guibg=#353b45
 hi! CocWarningSign guifg=#d1cd66
-
-" Show definition
-nmap <silent> <space>d :<C-U>call CocActionAsync('jumpDefinition')<CR>
-
-" Show references
-nmap <silent> <space>r :<C-U>call CocActionAsync('jumpReferences')<CR>
 
 " Better display for messages
 set cmdheight=2
@@ -338,27 +284,7 @@ hi clear SpellBad
 hi SpellBad cterm=underline
 hi CocErrorFloat guifg=#00ff00
 
-" search in files
-nmap <C-F>f <Plug>CtrlSFPrompt
-nmap <C-F>n <Plug>CtrlSFCwordPath
-nmap <C-F>p <Plug>CtrlSFPwordPath
-
-" make ctrlp use vim working dir
-let g:ctrlp_working_path_mode = 0
-
-" make CtrlSF not auto close
-let g:ctrlsf_auto_close = {
-    \ "normal" : 0,
-    \ "compact": 0
-    \}
-
-let g:ctrlsf_extra_backend_args = {
-      \ 'ack': '--ignore-file=is:erl_crash.dump'
-      \ }
-
-" let g:ctrlsf_default_view_mode = 'compact'
-
-let g:ctrlsf_ignore_dir = ['node_modules', '.nuxt', 'target', 'dist', 'DS_Store', '_build', 'deps', 'vendor', 'coverage', '.elixir_ls', 'erl_crash.dump']
+"let g:ctrlsf_ignore_dir = ['node_modules', '.nuxt', 'target', 'dist', 'DS_Store', '_build', 'deps', 'vendor', 'coverage', '.elixir_ls', 'erl_crash.dump']
 
 autocmd! BufNewFile,BufRead *.vs,*.fs set ft=glsl
 
@@ -367,3 +293,15 @@ autocmd! BufNewFile,BufRead *.vs,*.fs set ft=glsl
 
 "
 inoremap <silent><expr> <c-space> coc#refresh()
+
+command Glol :G log "--graph" "--pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset'\'"
+
+"--- chatgpt
+luafile ~/.config/nvim/packer.lua
+
+"--- nvim-tree
+luafile ~/.config/nvim/nvim-tree.lua
+map <silent> <Leader>n :NvimTreeFindFile<CR>:NvimTreeFocus<CR>
+
+"--- Telescope
+luafile ~/.config/nvim/telescope.lua

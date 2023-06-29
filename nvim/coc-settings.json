@@ -1,0 +1,26 @@
+{
+  "sql.database": "postgresql",
+  "codeLens.enable": true,
+  "elixirLS.dialyzerEnabled": true,
+  "elixir.pathToElixirLS": "~/.elixir-ls/language_server.sh",
+  "languageserver": {
+    "graphql": {
+      "command": "graphql-lsp",
+      "args": [
+        "server",
+        "-m",
+        "stream"
+      ],
+      "filetypes": [
+        "typescript",
+        "typescriptreact",
+        "graphql",
+        "gql"
+      ]
+    }
+  },
+  "svelte.enable-ts-plugin": true,
+  "tailwindCSS.includeLanguages": {"svelte": "html"},
+  "rust-analyzer.lens.enable": true,
+  "codeLens.position": "eol"
+}
