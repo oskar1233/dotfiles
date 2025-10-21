@@ -1,12 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-
-# Path to Java
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.2.jdk/Contents/Home"
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -67,7 +64,6 @@ ZSH_THEME="3den"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   vi-mode
-  composer
   sudo
   git
 )
@@ -112,9 +108,9 @@ alias load_nvm='
 export EDITOR='vim'
 export VISUAL='vim'
 
-export CATALINA_HOME=/usr/share/tomcat7
-
 alias vim='nvim'
+
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
@@ -138,3 +134,17 @@ fi
 
 if [ -f "$HOME/.asdf/asdf.sh" ]; then . $HOME/.asdf/asdf.sh
 fi
+export MODULAR_HOME="/Users/oskar1233/.modular"
+export PATH="/Users/oskar1233/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
+export PATH="/Users/oskar1233/surfer/.devbox/virtenv/cargo/bin:$PATH"
+
+alias go-reshim='asdf reshim golang && export GOROOT="$(asdf where golang)/go/"'
+
+source <(fzf --zsh)
+
+if [ -f ~/.env ]
+then
+  export $(grep -v '^#' ~/.env | xargs)
+fi
+
+autoload -U compinit; compinit
