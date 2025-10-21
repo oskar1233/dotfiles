@@ -1,0 +1,4 @@
+shift + cmd - h : yabai -m window --focus west
+shift + cmd - j : yabai -m window --focus south
+shift + cmd - k : yabai -m window --focus north
+shift + cmd - l : yabai -m window --focus east
