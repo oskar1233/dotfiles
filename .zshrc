@@ -1,9 +1,16 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
+export PATH=/Users/oskar1233/.cache/rebar3/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+
+# Path to Java
+# export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.2.jdk/Contents/Home"
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -63,9 +70,9 @@ ZSH_THEME="3den"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  vi-mode
-  sudo
+  zsh-vi-mode
   git
+  direnv
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -105,8 +112,8 @@ alias load_nvm='
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 '
 
-export EDITOR='vim'
-export VISUAL='vim'
+export EDITOR='nvim'
+export VISUAL='nvim'
 
 alias vim='nvim'
 
@@ -119,6 +126,8 @@ if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/
 if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
 
 # eval $(docker-machine env)
+export ASDF_DATA_DIR=/Users/oskar1233/.asdf-old
+export PATH="$ASDF_DATA_DIR/shims:$PATH"
 
 if command -v thefuck &> /dev/null
 then
@@ -140,6 +149,8 @@ export PATH="/Users/oskar1233/surfer/.devbox/virtenv/cargo/bin:$PATH"
 
 alias go-reshim='asdf reshim golang && export GOROOT="$(asdf where golang)/go/"'
 
+. ~/.asdf-old/plugins/golang/set-env.zsh
+
 source <(fzf --zsh)
 
 if [ -f ~/.env ]
@@ -147,4 +158,30 @@ then
   export $(grep -v '^#' ~/.env | xargs)
 fi
 
+# rustup instead of asdf for rust
+. "$HOME/.cargo/env"
+
 autoload -U compinit; compinit
+
+# bun completions
+[ -s "/Users/oskar1233/.bun/_bun" ] && source "/Users/oskar1233/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="/Users/oskar1233/.hookctl/bin:$PATH"
+export PATH="/Users/oskar1233/.local/bin:$PATH"
+
+# OpenClaw Completion (very slow)
+export PATH=$PATH:$HOME/.maestro/bin
+
+# z instead of cd
+eval "$(zoxide init zsh)"
+
+export PATH="/Users/oskar1233/.pixi/bin:$PATH"
+
+# opencode
+export PATH=/Users/oskar1233/.opencode/bin:$PATH
+
+# OpenClaw Completion
+source "/Users/oskar1233/.openclaw/completions/openclaw.zsh"
